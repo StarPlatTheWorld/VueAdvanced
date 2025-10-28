@@ -1,47 +1,62 @@
-<script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
-</script>
-
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+  <div class="container">
+    <div>{{ message }}</div>
+    Contact Owner Name: <input v-model="ownerName" />
+    <!-- Local Component -->
+    <!-- Local Component Registration scopes the availability of the registered component to the current component only. More tree-shaking friendly.-->
+    <!-- <Contact
+      name="Ethan"
+      :phoneNumber="1231231231"
+      :ownerName="contactsOwner"
+      email="vamp@test.com"
+    />
+    <Contact
+      name="James"
+      :phoneNumber="4564564564"
+      :ownerName="contactsOwner"
+      email="kaiser@test.com"
+    /> -->
+    <div class="row">
+      <div class="col-12" v-for="contact in contacts" :key="contact.name">
+        <Contact
+          :name="contact.name"
+          :phoneNumber="contact.phoneNumber"
+          :ownerName="contact.ownerName"
+          :email="contact.email"
+          :isFavorite="contact.isFavorite"
+        />
+      </div>
     </div>
-  </header>
-
-  <main>
-    <TheWelcome />
-  </main>
+  </div>
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
-}
+<script setup>
+// Local Component
+import { ref, reactive } from "vue";
+import ButtonCounter from "./components/ButtonCounter.vue";
+import Contact from "./components/Contact.vue";
+const message = "Hello Vue";
+const ownerName = ref("Test");
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-}
-</style>
+const contacts = reactive([
+  {
+    name: "Ethan",
+    phoneNumber: 1231231231,
+    ownerName: ownerName,
+    email: "test@email.com",
+    isFavorite: false,
+  },
+  {
+    name: "James",
+    phoneNumber: 4564564564,
+    ownerName: ownerName,
+    isFavorite: true,
+  },
+  {
+    name: "Bella",
+    phoneNumber: 7897897897,
+    ownerName: ownerName,
+    isFavorite: false,
+  },
+]);
+</script>
